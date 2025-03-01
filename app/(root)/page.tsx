@@ -17,13 +17,6 @@ export default function Home() {
           <Button asChild className="w-full">
             <Link href="/login">Login</Link>
           </Button>
-
-          <div className="text-center text-sm text-slate-500">
-            New to Zinso?{" "}
-            <Link href="/register" className="text-slate-800 hover:underline">
-              Create an account
-            </Link>
-          </div>
         </CardContent>
       </Card>
     </div>

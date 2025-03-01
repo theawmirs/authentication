@@ -56,17 +56,6 @@ const LoginForm = () => {
             </Button>
           </form>
         </CardContent>
-        <CardFooter className="justify-center">
-          <p className="text-sm text-gray-600">
-            Don't have an account?{" "}
-            <Link
-              href="/register"
-              className="font-medium text-gray-900 hover:text-gray-700"
-            >
-              Sign up
-            </Link>
-          </p>
-        </CardFooter>
       </Card>
     </div>
   );
