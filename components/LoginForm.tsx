@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -14,6 +14,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { signIn } from "next-auth/react";
 import { toast } from "sonner";
+import { set } from "date-fns";
 
 interface FormData {
   email: string;
@@ -26,6 +27,12 @@ const schema = z.object({
 });
 
 const LoginForm = () => {
+  const [isLoading, setIsLoading] = useState(false);
+
+  //A function for faking a loading state
+  const wait = (ms: number) =>
+    new Promise((resolve) => setTimeout(resolve, ms));
+
   const {
     register,
     handleSubmit,
@@ -36,6 +43,8 @@ const LoginForm = () => {
 
   const onSubmit = async (data: FormData) => {
     try {
+      setIsLoading(true);
+      await wait(1500);
       const result = await signIn("credentials", {
         ...data,
         redirect: false,
@@ -44,10 +53,12 @@ const LoginForm = () => {
       if (result?.error) {
         toast.error("Invalid email or password");
         console.error("Authentication error:", result.error);
+        setIsLoading(false);
       } else if (result?.ok) {
         toast.success("Signed in successfully");
-        // Redirect to dashboard or home page after successful login
-        window.location.href = "/"; // Or use router.push("/dashboard") if using Next.js router
+        // Redirect to /me page after successful login
+        window.location.href = "/me";
+        setIsLoading(false);
       }
     } catch (error) {
       console.error("Sign in error:", error);
@@ -98,9 +109,12 @@ const LoginForm = () => {
 
             <Button
               type="submit"
-              className="w-full bg-gray-900 hover:bg-gray-800"
+              disabled={isLoading}
+              className={`w-full ${
+                isLoading ? "bg-gray-500" : "bg-gray-900"
+              } hover:bg-gray-800 cursor-pointer`}
             >
-              Sign in
+              {isLoading ? "Signin..." : "Sign in"}
             </Button>
           </form>
         </CardContent>
