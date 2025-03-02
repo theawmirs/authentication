@@ -9,7 +9,7 @@ const authorize = async (credentials: Credentials): Promise<User | null> => {
   if (!credentials) return null;
 
   if (
-    credentials.email === "test@emaple.com" &&
+    credentials.email === "test@example.com" &&
     credentials.password === "password1234"
   ) {
     return {

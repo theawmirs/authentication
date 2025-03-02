@@ -14,7 +14,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { signIn } from "next-auth/react";
 import { toast } from "sonner";
-import { sign } from "crypto";
 
 interface FormData {
   email: string;
@@ -35,12 +34,25 @@ const LoginForm = () => {
     resolver: zodResolver(schema),
   });
 
-  const onSubmit = (data: FormData) => {
-    signIn("credentials", {
-      ...data,
-      redirect: true,
-      callbackUrl: "/me",
-    });
+  const onSubmit = async (data: FormData) => {
+    try {
+      const result = await signIn("credentials", {
+        ...data,
+        redirect: false,
+      });
+
+      if (result?.error) {
+        toast.error("Invalid email or password");
+        console.error("Authentication error:", result.error);
+      } else if (result?.ok) {
+        toast.success("Signed in successfully");
+        // Redirect to dashboard or home page after successful login
+        window.location.href = "/"; // Or use router.push("/dashboard") if using Next.js router
+      }
+    } catch (error) {
+      console.error("Sign in error:", error);
+      toast.error("An error occurred during sign in");
+    }
   };
 
   return (
