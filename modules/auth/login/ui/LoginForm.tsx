@@ -14,6 +14,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { signIn } from "next-auth/react";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 interface FormData {
   email: string;
@@ -26,7 +27,8 @@ const schema = z.object({
 });
 
 const LoginForm = () => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const router = useRouter();
 
   //A function for faking a loading state
   const wait = (ms: number) =>
@@ -55,8 +57,8 @@ const LoginForm = () => {
         setIsLoading(false);
       } else if (result?.ok) {
         toast.success("Signed in successfully");
-        // Redirect to /me page after successful login
-        window.location.href = "/me";
+        //Using router instead of window.location.href for seamless navigation
+        router.push("/me");
         setIsLoading(false);
       }
     } catch (error) {
