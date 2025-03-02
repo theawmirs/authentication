@@ -2,7 +2,7 @@
 
 import { useSession } from "next-auth/react";
 import { Skeleton } from "@/components/ui/skeleton";
-import Me from "@/components/Me";
+import Me from "@/modules/me/ui/Me";
 
 export default function ProfilePage() {
   const { status, data } = useSession();
