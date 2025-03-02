@@ -1,36 +1,117 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Next.js Authentication System
+
+A modern authentication system built with Next.js 15, featuring secure credential-based authentication, protected routes, and a clean user interface.
+
+## Features
+
+- 🔐 Secure credential-based authentication using NextAuth.js
+- 🛡️ Protected route middleware
+- 🎨 Modern UI with Tailwind CSS and Radix UI components
+- ✨ Form validation using Zod and React Hook Form
+- 🔄 Loading states and toast notifications
+- 📱 Responsive design
+- 🏗️ Type-safe development with TypeScript
+
+## Tech Stack
+
+- **Framework**: Next.js 15
+- **Authentication**: NextAuth.js
+- **Styling**: Tailwind CSS
+- **UI Components**: Radix UI
+- **Form Handling**: React Hook Form
+- **Validation**: Zod
+- **State Management**: React Hooks
+- **Notifications**: Sonner
+- **Language**: TypeScript
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 20.x or later
+- npm 11.x or later
+
+### Installation
+
+1. Clone the repository:
+
+```bash
+git clone [repository-url]
+cd authentication
+```
+
+2. Install dependencies:
+
+```bash
+npm install
+```
+
+3. Run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The application will be available at `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Usage
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Default Test Credentials
 
-## Learn More
+```
+Email: test@example.com
+Password: password1234
+```
 
-To learn more about Next.js, take a look at the following resources:
+### Authentication Flow
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Navigate to `/login`
+2. Enter credentials
+3. Upon successful authentication, you'll be redirected to `/me`
+4. Protected routes are automatically guarded by middleware
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Protected Routes
 
-## Deploy on Vercel
+- `/me/*` - Requires authentication
+- `/login` - Redirects to `/me` if already authenticated
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Project Structure
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+├── app/                    # Next.js app directory
+│   ├── (auth)/            # Authentication related pages
+│   ├── (root)/            # Root pages
+│   ├── me/                # Protected user pages
+│   └── api/               # API routes
+├── components/            # Reusable UI components
+├── modules/              # Feature modules
+│   ├── auth/             # Authentication module
+│   └── me/               # User profile module
+├── lib/                  # Utility functions
+├── types/                # TypeScript types
+└── middleware.ts         # Route protection middleware
+```
+
+## Development
+
+### Key Files
+
+- `auth.ts`: NextAuth configuration
+- `middleware.ts`: Route protection logic
+- `modules/auth/login/ui/LoginForm.tsx`: Login form component
+- `types/auth/index.ts`: Authentication related types
+
+### Form Validation
+
+The login form includes validation for:
+
+- Email (must be valid email format)
+- Password (minimum 8 characters)
+
+### Styling
+
+The project uses Tailwind CSS for styling with custom components from Radix UI. The UI is fully responsive and includes loading states.
+
+## License
+
+This project is licensed under the MIT License.
