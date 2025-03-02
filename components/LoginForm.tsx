@@ -12,6 +12,9 @@ import {
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { signIn } from "next-auth/react";
+import { toast } from "sonner";
+import { sign } from "crypto";
 
 interface FormData {
   email: string;
@@ -33,7 +36,11 @@ const LoginForm = () => {
   });
 
   const onSubmit = (data: FormData) => {
-    console.log(data);
+    signIn("credentials", {
+      ...data,
+      redirect: true,
+      callbackUrl: "/me",
+    });
   };
 
   return (
