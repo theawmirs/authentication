@@ -5,6 +5,7 @@ import { User } from "next-auth";
 
 type Credentials = Partial<Record<"email" | "password", unknown>> | undefined;
 
+//Mockup data - will be replaced with real data from the API
 const authorize = async (credentials: Credentials): Promise<User | null> => {
   if (!credentials) return null;
 
@@ -21,8 +22,10 @@ const authorize = async (credentials: Credentials): Promise<User | null> => {
   return null;
 };
 
+//Main NextAuth Configuration
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
+    //Custom login provider
     CredentialsProvider({
       name: "Credentials",
       credentials: {

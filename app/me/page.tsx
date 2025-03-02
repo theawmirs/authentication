@@ -1,7 +1,6 @@
 "use client";
 
 import { signOut, useSession } from "next-auth/react";
-import { redirect } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -9,10 +8,6 @@ import { LogOut } from "lucide-react";
 
 export default function ProfilePage() {
   const { status, data } = useSession();
-
-  if (status === "unauthenticated") {
-    redirect("/login");
-  }
 
   if (status === "loading") {
     return (
