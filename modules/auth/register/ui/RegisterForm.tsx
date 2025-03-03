@@ -13,6 +13,18 @@ import React from "react";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import axios from "axios";
+import { toast } from "sonner";
+import router from "next/router";
+
+interface Data {
+  email: string;
+  username: string;
+  password: string;
+  confirmPassword: string;
+}
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 const schema = z
   .object({
@@ -35,8 +47,24 @@ const RegisterForm = () => {
     resolver: zodResolver(schema),
   });
 
-  const onSubmit = (data: any) => {
-    console.log(data);
+  const onSubmit = async (data: Data) => {
+    try {
+      const resposne = await axios.post(`${API_URL}/auth/users`, {
+        email: data.email,
+        username: data.username,
+        password: data.password,
+      });
+
+      if (!resposne) {
+        toast.error("Something went wrong");
+      }
+
+      toast.success("User created successfully");
+      router.push("/login");
+    } catch (err) {
+      console.log(err);
+      toast.error("Something went wrong");
+    }
   };
 
   return (

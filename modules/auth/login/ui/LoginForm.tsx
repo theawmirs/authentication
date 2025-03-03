@@ -31,10 +31,6 @@ const LoginForm = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
 
-  //A function for faking a loading state
-  const wait = (ms: number) =>
-    new Promise((resolve) => setTimeout(resolve, ms));
-
   const {
     register,
     handleSubmit,
@@ -46,7 +42,6 @@ const LoginForm = () => {
   const onSubmit = async (data: FormData) => {
     try {
       setIsLoading(true);
-      await wait(1500);
       const result = await signIn("credentials", {
         ...data,
         redirect: false,
