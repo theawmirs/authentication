@@ -1,25 +1,31 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-//User interface from next-auth that contains the user object
 import { User } from "next-auth";
+import axios from "axios";
 
-type Credentials = Partial<Record<"email" | "password", unknown>> | undefined;
+type Credentials =
+  | Partial<Record<"username" | "password", unknown>>
+  | undefined;
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 //Mockup data - will be replaced with real data from the API
 const authorize = async (credentials: Credentials): Promise<User | null> => {
   if (!credentials) return null;
 
-  if (
-    credentials.email === "test@example.com" &&
-    credentials.password === "password1234"
-  ) {
+  try {
+    const { data } = await axios.post(`${API_URL}/auth/jwt/create`, {
+      username: credentials.username,
+      password: credentials.password,
+    });
     return {
-      id: "1",
-      name: "Test User",
-      email: credentials.email,
+      accessToken: data.access,
+      refreshToken: data.refresh,
     };
+  } catch (err) {
+    console.log(err);
+    return null;
   }
-  return null;
 };
 
 //Main NextAuth Configuration
@@ -29,7 +35,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        email: { label: "Email", type: "email" },
+        username: { label: "Username", type: "username" },
         password: { label: "Password", type: "password" },
       },
       authorize,
@@ -43,7 +49,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async jwt({ token, user }) {
       // Add user data to token when first created
       if (user) {
-        token.id = user.id;
+        token.accessToken = user.accessToken;
+        token.refreshToken = user.refreshToken;
       }
       return token;
     },
@@ -51,6 +58,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async session({ session, token }) {
       if (token && session.user) {
         session.user.id = token.id as string;
+        session.user.accessToken = token.accessToken as string;
       }
       return session;
     },
