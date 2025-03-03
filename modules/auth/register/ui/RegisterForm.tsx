@@ -49,20 +49,15 @@ const RegisterForm = () => {
 
   const onSubmit = async (data: Data) => {
     try {
-      const resposne = await axios.post(`${API_URL}/auth/users`, {
+      await axios.post(`${API_URL}/auth/users`, {
         email: data.email,
         username: data.username,
         password: data.password,
       });
 
-      if (!resposne) {
-        toast.error("Something went wrong");
-      }
-
       toast.success("User created successfully");
       router.push("/login");
     } catch (err) {
-      console.log(err);
       toast.error("Something went wrong");
     }
   };
