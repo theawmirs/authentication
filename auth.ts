@@ -2,23 +2,30 @@ import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { User } from "next-auth";
 import axios from "axios";
-
-type Credentials =
-  | Partial<Record<"username" | "password", unknown>>
-  | undefined;
+import { jwtDecode } from "jwt-decode";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-//Mockup data - will be replaced with real data from the API
-const authorize = async (credentials: Credentials): Promise<User | null> => {
-  if (!credentials) return null;
+interface JwtPayload {
+  user_id: string;
+}
+
+const authorize = async (
+  credentials: Partial<Record<"username" | "password", unknown>>
+): Promise<User | null> => {
+  if (!credentials?.username || !credentials?.password) return null;
 
   try {
     const { data } = await axios.post(`${API_URL}/auth/jwt/create`, {
-      username: credentials.username,
-      password: credentials.password,
+      username: credentials.username.toString(),
+      password: credentials.password.toString(),
     });
+
+    const decodedToken = jwtDecode<JwtPayload>(data.access);
+    console.log(decodedToken);
     return {
+      username: credentials.username.toString(),
+      id: decodedToken.user_id,
       accessToken: data.access,
       refreshToken: data.refresh,
     };
@@ -51,12 +58,15 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (user) {
         token.accessToken = user.accessToken;
         token.refreshToken = user.refreshToken;
+        token.username = user.username;
+        token.id = user.id;
       }
       return token;
     },
     // Session callback - makes token data available in client
     async session({ session, token }) {
       if (token && session.user) {
+        session.user.username = token.username as string;
         session.user.id = token.id as string;
         session.user.accessToken = token.accessToken as string;
       }

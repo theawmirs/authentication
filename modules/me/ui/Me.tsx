@@ -20,12 +20,8 @@ const Me = ({ data }: MeProp) => {
         <CardContent>
           <div className="space-y-3">
             <p className="flex">
-              <span className="font-medium w-24">Name:</span>
-              <span>{data?.user?.name}</span>
-            </p>
-            <p className="flex">
-              <span className="font-medium w-24">Email:</span>
-              <span>{data?.user?.email}</span>
+              <span className="font-medium w-24">Username:</span>
+              <span>{data?.user?.username}</span>
             </p>
             <p className="flex">
               <span className="font-medium w-24">User ID:</span>
