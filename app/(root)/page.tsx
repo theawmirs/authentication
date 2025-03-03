@@ -14,7 +14,7 @@ export default function Home() {
 
         <CardContent className="space-y-4">
           <Button asChild className="w-full">
-            <Link href="/login">Login</Link>
+            <Link href="/login">Get Started</Link>
           </Button>
         </CardContent>
       </Card>
