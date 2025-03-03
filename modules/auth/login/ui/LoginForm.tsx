@@ -15,6 +15,7 @@ import { useForm } from "react-hook-form";
 import { signIn } from "next-auth/react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 interface FormData {
   username: string;
@@ -117,6 +118,13 @@ const LoginForm = () => {
             >
               {isLoading ? "Signin..." : "Sign in"}
             </Button>
+            <Link
+              href="/register"
+              className="block text-center text-sm text-gray-600 hover:text-gray-900 mt-4 transition-colors duration-200"
+            >
+              Don't have an account?{" "}
+              <span className="font-semibold underline">Register now!</span>
+            </Link>
           </form>
         </CardContent>
       </Card>

@@ -4,6 +4,7 @@ import { User } from "next-auth";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 
+//Custom varibale that uses the env variable
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 interface JwtPayload {
@@ -21,8 +22,9 @@ const authorize = async (
       password: credentials.password.toString(),
     });
 
+    //Decode the JWT token to extract some data from it
     const decodedToken = jwtDecode<JwtPayload>(data.access);
-    console.log(decodedToken);
+
     return {
       username: credentials.username.toString(),
       id: decodedToken.user_id,
