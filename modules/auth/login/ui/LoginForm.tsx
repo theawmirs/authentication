@@ -17,12 +17,12 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
 interface FormData {
-  email: string;
+  username: string;
   password: string;
 }
 
 const schema = z.object({
-  email: z.string().email(),
+  username: z.string(),
   password: z.string().min(8),
 });
 
@@ -52,7 +52,7 @@ const LoginForm = () => {
       });
 
       if (result?.error) {
-        toast.error("Invalid email or password");
+        toast.error("Invalid username or password");
         console.error("Authentication error:", result.error);
         setIsLoading(false);
       } else if (result?.ok) {
@@ -78,17 +78,17 @@ const LoginForm = () => {
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="email">Email address</Label>
+                <Label htmlFor="username">Username </Label>
                 <Input
-                  {...register("email")}
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  placeholder="name@example.com"
+                  {...register("username")}
+                  id="username"
+                  name="username"
+                  type="username"
+                  autoComplete="username"
+                  placeholder="username"
                 />
-                {errors.email && (
-                  <p className="text-red-500">{errors.email.message}</p>
+                {errors.username && (
+                  <p className="text-red-500">{errors.username.message}</p>
                 )}
               </div>
 
