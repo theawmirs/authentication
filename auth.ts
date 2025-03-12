@@ -4,8 +4,6 @@ import { User } from "next-auth";
 import { JWT } from "next-auth/jwt";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
-import { access } from "fs";
-
 //Custom varibale that uses the env variable
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -25,19 +23,19 @@ interface TokenType {
 interface ExtendedToken extends JWT {
   accessToken?: string;
   refreshToken?: string;
-  username?: string;
+  phone_number?: string;
   id?: string;
   error?: string;
 }
 
 const authorize = async (
-  credentials: Partial<Record<"username" | "password", unknown>>
+  credentials: Partial<Record<"phone" | "password", unknown>>
 ): Promise<User | null> => {
-  if (!credentials?.username || !credentials?.password) return null;
+  if (!credentials?.phone || !credentials?.password) return null;
 
   try {
     const { data } = await axios.post(`${API_URL}/auth/jwt/create`, {
-      username: credentials.username.toString(),
+      phone_number: credentials.phone.toString(),
       password: credentials.password.toString(),
     });
 
@@ -45,7 +43,7 @@ const authorize = async (
     const decodedToken = jwtDecode<JwtPayload>(data.access);
 
     return {
-      username: credentials.username.toString(),
+      phone: credentials.phone.toString(),
       id: decodedToken.user_id,
       accessToken: data.access,
       refreshToken: data.refresh,
@@ -108,7 +106,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (user) {
         token.accessToken = user.accessToken;
         token.refreshToken = user.refreshToken;
-        token.username = user.username;
+        token.phone = user.phone;
         token.id = user.id;
       }
 
@@ -132,7 +130,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     // Session callback - makes token data available in client
     async session({ session, token }) {
       if (token && session.user) {
-        session.user.username = token.username as string;
+        session.user.phone = token.phone as string;
         session.user.id = token.id as string;
         session.user.accessToken = token.accessToken as string;
       }

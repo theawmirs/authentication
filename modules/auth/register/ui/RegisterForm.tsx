@@ -18,8 +18,7 @@ import { toast } from "sonner";
 import router from "next/router";
 
 interface Data {
-  email: string;
-  username: string;
+  phone: string;
   password: string;
   confirmPassword: string;
 }
@@ -28,8 +27,7 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 const schema = z
   .object({
-    email: z.string().email(),
-    username: z.string().min(3),
+    phone: z.string().min(10),
     password: z.string().min(8),
     confirmPassword: z.string().min(8),
   })
@@ -50,8 +48,7 @@ const RegisterForm = () => {
   const onSubmit = async (data: Data) => {
     try {
       await axios.post(`${API_URL}/auth/users`, {
-        email: data.email,
-        username: data.username,
+        phone_number: data.phone,
         password: data.password,
       });
 
@@ -78,32 +75,17 @@ const RegisterForm = () => {
           <form className="space-y-6">
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="phone">Phone Number</Label>
                 <Input
-                  {...register("email")}
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  placeholder="your@email.com"
-                />
-                {errors.email && (
-                  <p className="text-red-500">{errors.email.message}</p>
-                )}
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="username">Username</Label>
-                <Input
-                  {...register("username")}
-                  id="username"
-                  name="username"
+                  {...register("phone")}
+                  id="phone"
+                  name="phone"
                   type="text"
-                  autoComplete="username"
-                  placeholder="username"
+                  autoComplete="phone"
+                  placeholder="phone"
                 />
-                {errors.username && (
-                  <p className="text-red-500">{errors.username.message}</p>
+                {errors.phone && (
+                  <p className="text-red-500">{errors.phone.message}</p>
                 )}
               </div>
 

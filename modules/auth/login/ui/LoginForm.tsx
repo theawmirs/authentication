@@ -18,12 +18,12 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 interface FormData {
-  username: string;
+  phone: string;
   password: string;
 }
 
 const schema = z.object({
-  username: z.string(),
+  phone: z.string(),
   password: z.string().min(8),
 });
 
@@ -48,7 +48,7 @@ const LoginForm = () => {
       });
 
       if (result?.error) {
-        toast.error("Invalid username or password");
+        toast.error("Invalid Phone number or password");
         console.error("Authentication error:", result.error);
         setIsLoading(false);
       } else if (result?.ok) {
@@ -74,17 +74,17 @@ const LoginForm = () => {
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="username">Username </Label>
+                <Label htmlFor="phone">Phone </Label>
                 <Input
-                  {...register("username")}
-                  id="username"
-                  name="username"
-                  type="username"
-                  autoComplete="username"
-                  placeholder="username"
+                  {...register("phone")}
+                  id="phone"
+                  name="phone"
+                  type="phone"
+                  autoComplete="phone"
+                  placeholder="phone"
                 />
-                {errors.username && (
-                  <p className="text-red-500">{errors.username.message}</p>
+                {errors.phone && (
+                  <p className="text-red-500">{errors.phone.message}</p>
                 )}
               </div>
 
