@@ -1,4 +1,4 @@
-'use client";';
+"use client";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -37,6 +37,9 @@ const LoginForm = () => {
                   autoComplete="phone"
                   placeholder="phone"
                 />
+                {state?.error?.phone && (
+                  <p className="text-red-500 text-sm">{state.error.phone}</p>
+                )}
               </div>
 
               <div className="space-y-2">
@@ -48,6 +51,9 @@ const LoginForm = () => {
                   autoComplete="current-password"
                   placeholder="••••••••"
                 />
+                {state?.error?.password && (
+                  <p className="text-red-500 text-sm">{state.error.password}</p>
+                )}
               </div>
             </div>
 
