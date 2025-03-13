@@ -16,6 +16,10 @@ export const createSession = async (userId: string) => {
   });
 };
 
+export const destroySession = async () => {
+  (await cookies()).delete("session");
+};
+
 type SessionPayload = {
   userId: string;
   expiresAt: Date;

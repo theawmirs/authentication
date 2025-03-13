@@ -1,6 +1,6 @@
 "use server";
 
-import { createSession } from "@/lib/session";
+import { createSession, destroySession } from "@/lib/session";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 
@@ -46,4 +46,15 @@ export const login = async (prevState: any, fromData: FormData) => {
   return redirect("/dashboard");
 };
 
-export const logout = async () => {};
+export const logout = async () => {
+  // Simulate a logout process
+  try {
+    await destroySession();
+  } catch (error) {
+    return {
+      error: { server: ["Failed to destroy session"] },
+    };
+  }
+
+  return redirect("/");
+};
