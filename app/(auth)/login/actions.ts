@@ -34,8 +34,16 @@ export const login = async (prevState: any, fromData: FormData) => {
     };
   }
 
-  await createSession(testUser.id);
+  try {
+    await createSession(testUser.id);
+  } catch (error) {
+    return {
+      error: { server: ["Failed to create session"] },
+    };
+  }
 
-  redirect("/dashboard");
+  // Move redirect outside of try-catch
+  return redirect("/dashboard");
 };
+
 export const logout = async () => {};
