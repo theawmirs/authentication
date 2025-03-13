@@ -1,4 +1,3 @@
-"use client";
 import RegisterForm from "@/modules/auth/register/ui/RegisterForm";
 import React from "react";
 
