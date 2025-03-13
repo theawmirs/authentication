@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -12,9 +11,7 @@ import {
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { signIn } from "next-auth/react";
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+
 import Link from "next/link";
 
 interface FormData {
@@ -28,9 +25,6 @@ const schema = z.object({
 });
 
 const LoginForm = () => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const router = useRouter();
-
   const {
     register,
     handleSubmit,
@@ -40,27 +34,7 @@ const LoginForm = () => {
   });
 
   const onSubmit = async (data: FormData) => {
-    try {
-      setIsLoading(true);
-      const result = await signIn("credentials", {
-        ...data,
-        redirect: false,
-      });
-
-      if (result?.error) {
-        toast.error("Invalid Phone number or password");
-        console.error("Authentication error:", result.error);
-        setIsLoading(false);
-      } else if (result?.ok) {
-        toast.success("Signed in successfully");
-        //Using router instead of window.location.href for seamless navigation
-        router.push("/me");
-        setIsLoading(false);
-      }
-    } catch (error) {
-      console.error("Sign in error:", error);
-      toast.error("An error occurred during sign in");
-    }
+    console.log(data);
   };
 
   return (
@@ -106,12 +80,9 @@ const LoginForm = () => {
 
             <Button
               type="submit"
-              disabled={isLoading}
-              className={`w-full ${
-                isLoading ? "bg-gray-500" : "bg-gray-900"
-              } hover:bg-gray-800 cursor-pointer`}
+              className={`w-full ${"bg-gray-900"} hover:bg-gray-800 cursor-pointer`}
             >
-              {isLoading ? "Signin..." : "Sign in"}
+              {"Sign in"}
             </Button>
             <Link
               href="/register"
